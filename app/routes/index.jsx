@@ -1,5 +1,5 @@
 import { useLoaderData, Link } from "remix";
-import { getPosts } from "~/post";
+import { getPosts } from "~/post.server";
 
 export async function loader() {
   return getPosts();

@@ -1,12 +1,8 @@
-import { db } from "~/utils/db.server";
+import { getImage } from "~/post.server";
 
 /** @type {import("remix").LoaderFunction} */
 export async function loader({ params }) {
-  let image = await db.image.findUnique({
-    where: {
-      name: params.name
-    }
-  });
+  let image = await getImage(params.name);
   if (!image.mime.startsWith("image/")) {
     throw new Response({
       status: 401

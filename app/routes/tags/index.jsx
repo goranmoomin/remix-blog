@@ -1,5 +1,5 @@
 import { useLoaderData, Link } from "remix";
-import { getTags } from "~/post";
+import { getTags } from "~/post.server";
 
 export async function loader() {
   let tags = await getTags();

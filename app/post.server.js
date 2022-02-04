@@ -119,3 +119,11 @@ export async function getPost(slug) {
 export async function getTags() {
   return await db.tag.findMany();
 }
+
+export async function getImage(name) {
+  return await db.image.findUnique({
+    where: {
+      name
+    }
+  });
+}

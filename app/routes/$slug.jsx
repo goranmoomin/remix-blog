@@ -1,25 +1,10 @@
 import { redirect, useLoaderData, Link } from "remix";
-import { getPost } from "~/post";
-import { db } from "~/utils/db.server";
+import { getPost } from "~/post.server";
 
 /** @type {import("remix").LoaderFunction} */
 export async function loader({ params }) {
   return await getPost(params.slug);
 }
-
-/** @type {import("remix").ActionFunction} */
-export async function action({ request, params }) {
-  let form = await request.formData();
-  if (form.get("_method") === "delete") {
-    let slug = encodeURIComponent(params.slug);
-    await db.post.delete({
-      where: { slug },
-    });
-  }
-
-  return redirect("/");
-}
-
 
 export default function Post() {
   let post = useLoaderData();
@@ -42,11 +27,6 @@ export default function Post() {
             <Link className="text-indigo-700 underline decoration-2 underline-offset-4" to={`/tags/${tag.name}`}>{tag.name}</Link>
           </span>
         ))}
-        {" · "}
-        <form className="inline" method="post">
-          <input type="hidden" name="_method" value="delete" />
-          <button type="submit" className="uppercase">Delete</button>
-        </form>
       </div>
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
     </article >
