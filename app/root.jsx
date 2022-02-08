@@ -5,14 +5,17 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  Link
+  Link,
+  useLoaderData
 } from "remix";
+
+import { getTags } from "~/post.server";
 
 import hljsStyles from "./styles/hljs.css";
 import styles from "./tailwind.css";
 
 export function meta() {
-  return { title: "New Remix App" };
+  return { title: "@goranmoomin's Blog" };
 }
 
 export function links() {
@@ -34,7 +37,16 @@ export function links() {
   }];
 }
 
+/** @type {import("remix").LoaderFunction} */
+export async function loader() {
+  let tags = await getTags();
+  let categories = tags.filter(tag => tag.isCategory);
+  return categories;
+}
+
 export default function App() {
+  /** @type {import("~/post.server").Tag[]} */
+  let categories = useLoaderData();
   return (
     <html lang="en">
       <head>
@@ -50,8 +62,9 @@ export default function App() {
               <Link to="/">미완성된 블로그</Link>
             </span>
             <Link to="/" className="align-middle font-bold text-indigo-700">Posts</Link>
-            <Link to="/tags/Dev" className="align-middle font-bold text-indigo-700">Dev</Link>
-            <Link to="/tags/Algorithm" className="align-middle font-bold text-indigo-700">Algorithm</Link>
+            {categories.map(category => (
+              <Link key={category.name} to={`/tags/${category.name.toLowerCase()}`} className="align-middle font-bold text-indigo-700">{category.name}</Link>
+            ))}
           </nav>
         </header>
         <main className="mx-auto my-12 w-11/12 lg:max-w-3xl">

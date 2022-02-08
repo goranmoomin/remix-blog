@@ -7,5 +7,6 @@ module.exports = {
   publicPath: "/build/",
   serverBuildDirectory: "build",
   devServerPort: 8002,
-  ignoredRouteFiles: [".*"]
+  ignoredRouteFiles: [".*"],
+  transpileModules: ["file-type", "strtok3", "peek-readable", "token-types"]
 };
